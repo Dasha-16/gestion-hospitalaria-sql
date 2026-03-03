@@ -1,7 +1,7 @@
 # 🏥 CureSA — Sistema de Gestión Hospitalaria (Base de Datos)
 
-> Trabajo Práctico Integrador — Materia: **Bases de Datos Aplicadas** - Año: 2023 
-
+> Trabajo Práctico Integrador — Materia: **Bases de Datos Aplicadas**  
+> Grupo 12 · Turno Martes Noche · 2023
 
 ---
 
@@ -20,16 +20,14 @@ El proyecto fue desarrollado en dos etapas principales:
 
 ```
 /
-├── TP3/
-│   ├── Script.sql        # Creación de BD, tablas y Stored Procedures
-│   └── Pruebas.sql       # Casos de prueba para los SPs
-├── TP4/
-│   ├── ScriptFinal.sql   # Script completo con importación de datos y generación XML
-│   └── Pruebas.sql       # Casos de prueba del TP4
-└── Docs/
-    ├── TP Integrador - 1° y 2° Parte.pdf
-    └── Como_Instalar_SSMS.docx
+├── 01_schema.sql         # Creación de base de datos, esquemas y tablas
+├── 02_procedures.sql     # Stored Procedures CRUD para todas las entidades
+├── 03_data_import.sql    # Importación de datos desde archivos CSV y JSON
+├── 04_reports.sql        # Generación de reportes XML para obras sociales
+└── 05_tests.sql          # Casos de prueba (ejecutar de a secciones)
 ```
+
+> Los archivos están numerados en el orden correcto de ejecución.
 
 ---
 
@@ -56,7 +54,7 @@ La base de datos `CURESA` está organizada en **tres esquemas**:
 
 ## ⚙️ Funcionalidades implementadas
 
-### TP3 — Stored Procedures (CRUD completo)
+### Stored Procedures (CRUD completo)
 
 Se implementaron operaciones de **Insertar, Modificar y Eliminar** (borrado lógico con `fechaBorrado`) para todas las entidades:
 
@@ -70,7 +68,7 @@ Características destacadas:
 - Uso de `ISNULL` para actualizaciones parciales
 - Verificación de existencia antes de operar
 
-### TP4 — Importación y reportes
+### Importación y reportes
 
 - Importación de maestros desde archivos **CSV** (Médicos, Pacientes, Prestadores, Sedes)
 - Importación de parametrización desde **JSON** (autorización de estudios por obra social)
@@ -84,18 +82,16 @@ Características destacadas:
 ### Requisitos
 
 - **SQL Server** (2019 o superior recomendado)
-- **SQL Server Management Studio (SSMS)** — ver `Docs/Como_Instalar_SSMS.docx`
+- **SQL Server Management Studio (SSMS)**
 
 ### Pasos
 
 1. Abrir SSMS y conectarse a tu instancia de SQL Server.
-2. Abrir `TP3/Script.sql` y ejecutarlo completo (`F5`).
-   Crea la base de datos `CURESA`, los esquemas, las tablas y todos los Stored Procedures.
-3. Para probar el funcionamiento, ejecutar por secciones `TP3/Pruebas.sql`.
-4. Para el TP4, abrir `TP4/ScriptFinal.sql` y ejecutarlo.
-5. Probar la importación y los reportes XML con `TP4/Pruebas.sql`.
-
-> **Nota:** El `ScriptFinal.sql` del TP4 recrea la base de datos desde cero con ajustes en las constraints para soportar la importación masiva de datos.
+2. Ejecutar `01_schema.sql` — crea la base de datos `CURESA`, los esquemas y las tablas.
+3. Ejecutar `02_procedures.sql` — crea todos los Stored Procedures.
+4. Ejecutar `03_data_import.sql` — importa los datos desde CSV y JSON (los archivos deben estar en `C:\importar\`).
+5. Ejecutar `04_reports.sql` — crea el SP para generar reportes XML.
+6. Opcionalmente, ejecutar `05_tests.sql` de a secciones para verificar el funcionamiento.
 
 ---
 
@@ -111,12 +107,12 @@ Características destacadas:
 
 ## 👥 Integrantes
 
-| Nombre               | DNI      |
-|----------------------|----------|
-| Santiago Galo        | 43473506 |
-| Juan Manuel Pergola  | 39515920 |
-| Dasha Apollaro       | 44448125 |
-| Johnathan Portillo   | 43458310 |
+| Nombre               
+|----------------------
+| Santiago Galo        
+| Juan Manuel Pergola  
+| Dasha Apollaro       
+| Johnathan Portillo   
 
 ---
 
