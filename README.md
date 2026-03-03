@@ -1,7 +1,7 @@
 # 🏥 CureSA — Sistema de Gestión Hospitalaria (Base de Datos)
 
-> Trabajo Práctico Integrador — Materia: **Bases de Datos Aplicadas**  
-> Grupo 12 · Turno Martes Noche · 2023
+> Trabajo Práctico Integrador — Materia: **Bases de Datos Aplicadas** - Año: 2023 
+
 
 ---
 
