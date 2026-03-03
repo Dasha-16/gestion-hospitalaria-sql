@@ -657,7 +657,7 @@ BEGIN
     END
 
     UPDATE datosAtencion.SedeAtencion
-    SET fechaBorrado = GETDATE() -- FIXED: era NULL, no realizaba el borrado logico
+    SET fechaBorrado = GETDATE()
     WHERE id = @SedeID;
 
 	IF(@@ERROR = 0)
@@ -1142,7 +1142,7 @@ BEGIN
 
 	UPDATE datosPaciente.Paciente
 	SET		nombre				= ISNULL(@nombre, nombre),
-			apellido			= ISNULL(@apellido, apellido), -- FIXED: era ISNULL(@apellido, nombre)
+			apellido			= ISNULL(@apellido, apellido),
 			apellidoMaterno		= ISNULL(@apellidoMaterno, apellidoMaterno),
 			fechaNacimiento		= ISNULL(@fechaNacimiento, fechaNacimiento),
 			tipoDocumento		= ISNULL(@tipoDocumento, tipoDocumento),
@@ -1420,7 +1420,7 @@ CREATE OR ALTER PROCEDURE datosReserva.EliminarReserva
     @id INT
 AS
 BEGIN
-	IF(NOT EXISTS(SELECT 1 FROM datosReserva.Reserva WHERE id = @id)) -- FIXED: faltaba WHERE id = @id
+	IF(NOT EXISTS(SELECT 1 FROM datosReserva.Reserva WHERE id = @id))
 	BEGIN
 		PRINT 'La Reserva con ID ' + CAST(@id AS VARCHAR) + ' no existe.';
         RETURN;

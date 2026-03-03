@@ -9,29 +9,32 @@
 -- DROP DATABASE CURESA
 
 ---- COMIENZO CREACION DE BASE DE DATOS Y ESQUEMAS ----
-create database CURESA COLLATE Modern_Spanish_CI_AI;
-go
-use CURESA
-
+CREATE DATABASE CURESA COLLATE Modern_Spanish_CI_AI;
 GO
+
+USE CURESA
+GO
+
 CREATE SCHEMA datosPaciente
 GO
 CREATE SCHEMA datosReserva
 GO
 CREATE SCHEMA datosAtencion
----- FIN CREACION DE BASE DE DATOS Y ESQUEMAS ----
-GO
 
+GO
+---- FIN CREACION DE BASE DE DATOS Y ESQUEMAS ----
+
+---- COMIENZO CREACION DE TABLAS ----
 IF OBJECT_ID('datosPaciente.Usuario') IS NOT NULL
 BEGIN
     DROP TABLE datosPaciente.Usuario
     IF OBJECT_ID('datosPaciente.Usuario') IS NOT NULL
-	RAISERROR('Ocurrió un error al intentar eliminar la tabla datosPaciente.Usuario', 16, 1);
+		RAISERROR('Ocurrió un error al intentar eliminar la tabla datosPaciente.Usuario.', 16, 1);
     ELSE
         PRINT 'Tabla datosPaciente.Usuario eliminada correctamente.'
 END
 GO
-CREATE TABLE datosPaciente.Usuario		
+CREATE TABLE datosPaciente.Usuario
 (
 	id INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 	contraseña CHAR(8) NOT NULL,
@@ -44,12 +47,12 @@ IF OBJECT_ID('datosPaciente.Domicilio') IS NOT NULL
 BEGIN
     DROP TABLE datosPaciente.Domicilio
     IF OBJECT_ID('datosPaciente.Domicilio') IS NOT NULL
-	RAISERROR('Ocurrió un error al intentar eliminar la tabla datosPaciente.Domicilio.', 16, 1);
+		RAISERROR('Ocurrió un error al intentar eliminar la tabla datosPaciente.Domicilio.', 16, 1);
     ELSE
         PRINT 'Tabla datosPaciente.Domicilio eliminada correctamente.'
 END
 GO
-CREATE TABLE datosPaciente.Domicilio	
+CREATE TABLE datosPaciente.Domicilio
 (
 	id INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 	calleYNro NVARCHAR(50) NOT NULL,
@@ -61,18 +64,18 @@ CREATE TABLE datosPaciente.Domicilio
 	localidad NVARCHAR(15) NOT NULL,
 	nroDocumento INT NOT NULL
 )
-go
+GO
 
 IF OBJECT_ID('datosPaciente.Prestador') IS NOT NULL
 BEGIN
     DROP TABLE datosPaciente.Prestador
     IF OBJECT_ID('datosPaciente.Prestador') IS NOT NULL
-	RAISERROR('Ocurrió un error al intentar eliminar la tabla datosPaciente.Prestador.', 16, 1);
+		RAISERROR('Ocurrió un error al intentar eliminar la tabla datosPaciente.Prestador.', 16, 1);
     ELSE
         PRINT 'Tabla datosPaciente.Prestador eliminada correctamente.'
 END
 GO
-CREATE TABLE datosPaciente.Prestador	
+CREATE TABLE datosPaciente.Prestador
 (
 	id INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 	nombre NVARCHAR(40) NOT NULL,
@@ -85,14 +88,14 @@ IF OBJECT_ID('datosPaciente.Cobertura') IS NOT NULL
 BEGIN
     DROP TABLE datosPaciente.Cobertura
     IF OBJECT_ID('datosPaciente.Cobertura') IS NOT NULL
-	RAISERROR('Ocurrió un error al intentar eliminar la tabla datosPaciente.Cobertura.', 16, 1);
+		RAISERROR('Ocurrió un error al intentar eliminar la tabla datosPaciente.Cobertura.', 16, 1);
     ELSE
         PRINT 'Tabla datosPaciente.Cobertura eliminada correctamente.'
 END
 GO
-CREATE TABLE datosPaciente.Cobertura	
+CREATE TABLE datosPaciente.Cobertura
 (
-	id INT IDENTITY(1,1) PRIMARY KEY not null,
+	id INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 	imagenCredencial NVARCHAR(40) NOT NULL,
 	nroSocio INT NOT NULL,
 	fechaRegistro DATETIME NOT NULL,
@@ -106,7 +109,7 @@ IF OBJECT_ID('datosPaciente.Estudio') IS NOT NULL
 BEGIN
     DROP TABLE datosPaciente.Estudio
     IF OBJECT_ID('datosPaciente.Estudio') IS NOT NULL
-	RAISERROR('Ocurrió un error al intentar eliminar la tabla datosPaciente.Estudio.', 16, 1);
+		RAISERROR('Ocurrió un error al intentar eliminar la tabla datosPaciente.Estudio.', 16, 1);
     ELSE
         PRINT 'Tabla datosPaciente.Estudio eliminada correctamente.'
 END
@@ -127,7 +130,7 @@ IF OBJECT_ID('datosPaciente.Paciente') IS NOT NULL
 BEGIN
     DROP TABLE datosPaciente.Paciente
     IF OBJECT_ID('datosPaciente.Paciente') IS NOT NULL
-	RAISERROR('Ocurrió un error al intentar eliminar la tabla datosPaciente.Paciente.', 16, 1);
+		RAISERROR('Ocurrió un error al intentar eliminar la tabla datosPaciente.Paciente.', 16, 1);
     ELSE
         PRINT 'Tabla datosPaciente.Paciente eliminada correctamente.'
 END
@@ -155,7 +158,7 @@ CREATE TABLE datosPaciente.Paciente
 	idEstudio INT NOT NULL,
 	idCobertura INT NOT NULL,
 	idUsuarioActualizacion INT NULL,
-	fechaBorrado DATETIME NULL
+	fechaBorrado DATETIME NULL,
 	CONSTRAINT PK_Paciente PRIMARY KEY (nroDocumento),
 	CONSTRAINT FK_Usuario FOREIGN KEY (idUsuario) REFERENCES datosPaciente.Usuario(id),
 	CONSTRAINT FK_Estudio FOREIGN KEY (idEstudio) REFERENCES datosPaciente.Estudio(id),
@@ -163,30 +166,11 @@ CREATE TABLE datosPaciente.Paciente
 )
 GO
 
-IF OBJECT_ID('datosReserva.EstadoTurno') IS NOT NULL
-BEGIN
-    DROP TABLE datosReserva.EstadoTurno
-    IF OBJECT_ID('datosReserva.EstadoTurno') IS NOT NULL
-	RAISERROR('Ocurrió un error al intentar eliminar la tabla datosReserva.EstadoTurno.', 16, 1);
-    ELSE
-        PRINT 'Tabla datosReserva.EstadoTurno eliminada correctamente.'
-END
-GO
-CREATE TABLE datosReserva.EstadoTurno
-(
-	id INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
-	nombreEstado CHAR(9) NOT NULL,
-	fechaBorrado DATETIME NULL,
-	CONSTRAINT CK_EstadoTurno_nombreEstado 
-        	CHECK (nombreEstado IN ('Atendido', 'Ausente', 'Cancelado'))
-)
-GO
-
 IF OBJECT_ID('datosAtencion.Especialidad') IS NOT NULL
 BEGIN
     DROP TABLE datosAtencion.Especialidad
     IF OBJECT_ID('datosAtencion.Especialidad') IS NOT NULL
-	RAISERROR('Ocurrió un error al intentar eliminar la tabla datosAtencion.Especialidad.', 16, 1);
+		RAISERROR('Ocurrió un error al intentar eliminar la tabla datosAtencion.Especialidad.', 16, 1);
     ELSE
         PRINT 'Tabla datosAtencion.Especialidad eliminada correctamente.'
 END
@@ -198,11 +182,49 @@ CREATE TABLE datosAtencion.Especialidad
 )
 GO
 
+IF OBJECT_ID('datosReserva.EstadoTurno') IS NOT NULL
+BEGIN
+    DROP TABLE datosReserva.EstadoTurno
+    IF OBJECT_ID('datosReserva.EstadoTurno') IS NOT NULL
+		RAISERROR('Ocurrió un error al intentar eliminar la tabla datosReserva.EstadoTurno.', 16, 1);
+    ELSE
+        PRINT 'Tabla datosReserva.EstadoTurno eliminada correctamente.'
+END
+GO
+CREATE TABLE datosReserva.EstadoTurno
+(
+	id INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	nombreEstado CHAR(9) NOT NULL,
+	fechaBorrado DATETIME NULL,
+    	CONSTRAINT CK_EstadoTurno_nombreEstado 
+        	CHECK (nombreEstado IN ('Atendido', 'Ausente', 'Cancelado'))
+)
+GO
+
+IF OBJECT_ID('datosReserva.TipoTurno') IS NOT NULL
+BEGIN
+    DROP TABLE datosReserva.TipoTurno
+    IF OBJECT_ID('datosReserva.TipoTurno') IS NOT NULL
+	RAISERROR('Ocurrió un error al intentar eliminar la tabla datosReserva.TipoTurno.', 16, 1);
+    ELSE
+        PRINT 'Tabla datosReserva.TipoTurno eliminada correctamente.'
+END
+GO
+CREATE TABLE datosReserva.TipoTurno
+(
+	id INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	nombre VARCHAR(10) NOT NULL,
+	fechaBorrado DATETIME NULL,
+	CONSTRAINT CK_TipoTurno_nombre 
+        CHECK (nombre IN ('Virtual', 'Presencial'))
+)
+GO
+
 IF OBJECT_ID('datosAtencion.SedeAtencion') IS NOT NULL
 BEGIN
     DROP TABLE datosAtencion.SedeAtencion
     IF OBJECT_ID('datosAtencion.SedeAtencion') IS NOT NULL
-	RAISERROR('Ocurrió un error al intentar eliminar la tabla datosAtencion.SedeAtencion.', 16, 1);
+		RAISERROR('Ocurrió un error al intentar eliminar la tabla datosAtencion.SedeAtencion.', 16, 1);
     ELSE
         PRINT 'Tabla datosAtencion.SedeAtencion eliminada correctamente.'
 END
@@ -220,7 +242,7 @@ IF OBJECT_ID('datosAtencion.Medico') IS NOT NULL
 BEGIN
     DROP TABLE datosAtencion.Medico
     IF OBJECT_ID('datosAtencion.Medico') IS NOT NULL
-	RAISERROR('Ocurrió un error al intentar eliminar la tabla datosAtencion.Medico.', 16, 1);
+		RAISERROR('Ocurrió un error al intentar eliminar la tabla datosAtencion.Medico.', 16, 1);
     ELSE
         PRINT 'Tabla datosAtencion.Medico eliminada correctamente.'
 END
@@ -237,12 +259,33 @@ CREATE TABLE datosAtencion.Medico
 )
 GO
 
--- hay campos comentados a modo de simplificar el codigo ya que no necesitamos de dichos campos para esta parte del trabajo
+IF OBJECT_ID('datosAtencion.DiasXSede') IS NOT NULL
+BEGIN
+    DROP TABLE datosAtencion.DiasXSede
+    IF OBJECT_ID('datosAtencion.DiasXSede') IS NOT NULL
+		RAISERROR('Ocurrió un error al intentar eliminar la tabla datosAtencion.DiasXSede.', 16, 1);
+    ELSE
+        PRINT 'Tabla datosAtencion.DiasXSede eliminada correctamente.'
+END
+GO
+CREATE TABLE datosAtencion.DiasXSede
+(
+	idSede INT NOT NULL,
+	idMedico INT NOT NULL,
+	diaSemana NVARCHAR(10) NOT NULL,
+	horaInicio TIME NOT NULL,
+	horaFin TIME NOT NULL,
+	CONSTRAINT PK_DiasXSede PRIMARY KEY (idSede, idMedico, diaSemana),
+	CONSTRAINT FK_Sede FOREIGN KEY (idSede) REFERENCES datosAtencion.SedeAtencion(id),
+	CONSTRAINT FK_Medico FOREIGN KEY (idMedico) REFERENCES datosAtencion.Medico(id)
+)
+GO
+
 IF OBJECT_ID('datosReserva.Reserva') IS NOT NULL
 BEGIN
     DROP TABLE datosReserva.Reserva
     IF OBJECT_ID('datosReserva.Reserva') IS NOT NULL
-	RAISERROR('Ocurrió un error al intentar eliminar la tabla datosReserva.Reserva.', 16, 1);
+		RAISERROR('Ocurrió un error al intentar eliminar la tabla datosReserva.Reserva.', 16, 1);
     ELSE
         PRINT 'Tabla datosReserva.Reserva eliminada correctamente.'
 END
@@ -254,17 +297,18 @@ CREATE TABLE datosReserva.Reserva
 	hora TIME NOT NULL,
 	idMedico INT NOT NULL,
 	idEspecialidad INT NOT NULL,
-	--idDireccionAtencion INT NOT NULL,
+	idDireccionAtencion INT NOT NULL,
 	idEstadoTurno INT NOT NULL,
-	--idTipoTurno INT NOT NULL,
+	idTipoTurno INT NOT NULL,
 	idPaciente INT NOT NULL,
-	CONSTRAINT FK_Especialidad FOREIGN KEY (idEspecialidad) REFERENCES datosAtencion.Especialidad(id),
-	--CONSTRAINT FK_Direccion FOREIGN KEY (idDireccionAtencion) REFERENCES datosAtencion.SedeAtencion(id),
+	CONSTRAINT FK_Reserva_Especialidad FOREIGN KEY (idEspecialidad) REFERENCES datosAtencion.Especialidad(id),
+	CONSTRAINT FK_Direccion FOREIGN KEY (idDireccionAtencion) REFERENCES datosAtencion.SedeAtencion(id),
 	CONSTRAINT FK_EstadoTurno FOREIGN KEY (idEstadoTurno) REFERENCES datosReserva.EstadoTurno(id),
-	--CONSTRAINT FK_TipoTurno FOREIGN KEY (idTipoTurno) REFERENCES datosReserva.TipoTurno(id),
+	CONSTRAINT FK_TipoTurno FOREIGN KEY (idTipoTurno) REFERENCES datosReserva.TipoTurno(id),
 	CONSTRAINT FK_Paciente FOREIGN KEY (idPaciente) REFERENCES datosPaciente.Paciente(nroDocumento)
 )
 GO
+---- FIN CREACION DE TABLAS ----
 
 -- Tabla creada para almacenar el JSON
 IF OBJECT_ID('datosAtencion.Centro_Autorizaciones') IS NOT NULL
@@ -286,8 +330,3 @@ CREATE TABLE datosAtencion.Centro_Autorizaciones (
     [Requiere autorizacion] varchar(5) -- Usamos varchar para guardar 'True' o 'False'
 );
 GO
-
----------------------------------------------------------------------------------
-
-----------------------------------------------------------------------------------
--- Creacion de los SP para cargar los datos desde CSV
